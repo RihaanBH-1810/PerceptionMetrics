@@ -177,7 +177,7 @@ def dataset_viewer_tab():
         """
         <style>
         .image-selector__image, .image-selector__image img {
-            max-width: 40px; max-height: 40px; width: 40px; height: 40px; object-fit: contain;
+            max-width: 120px; max-height: 120px; width: 120px; height: 120px; object-fit: contain;
         }
         </style>
     """,
