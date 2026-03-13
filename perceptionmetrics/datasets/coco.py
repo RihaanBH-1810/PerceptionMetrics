@@ -1,9 +1,35 @@
 from pycocotools.coco import COCO
 import os
+import re
 import pandas as pd
 from typing import Tuple, List, Optional
 
 from perceptionmetrics.datasets.detection import ImageDetectionDataset
+
+def find_img_dir_and_ann_file(dataset_path, split):
+    images_root = os.path.join(dataset_path, "images")
+    img_dir = None
+    pattern = re.compile(rf"{split}\d*")
+    for folder in os.listdir(images_root):
+        if pattern.fullmatch(folder):
+            img_dir = os.path.join(images_root, folder)
+            break
+
+    ann_root = os.path.join(dataset_path, "annotations")
+    ann_file_path = None
+    pattern = re.compile(rf"instances_{split}\d*\.json")
+    for fname in os.listdir(ann_root):
+        if pattern.fullmatch(fname):
+            ann_file_path = os.path.join(ann_root, fname)
+            break
+
+    if img_dir is None:
+        raise FileNotFoundError(f"No matching image directory found for split '{split}' in {dataset_path}.")
+    if ann_file_path is None:
+        raise FileNotFoundError(f"No matching annotation file found for split '{split}' in {dataset_path}.")
+
+    return img_dir, ann_file_path
+
 
 
 def build_coco_dataset(
@@ -88,6 +114,7 @@ class CocoDataset(ImageDetectionDataset):
         )
 
         super().__init__(dataset=dataset, dataset_dir=image_dir, ontology=ontology)
+
 
     def read_annotation(
         self, fname: str
