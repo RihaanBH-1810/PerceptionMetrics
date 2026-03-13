@@ -7,7 +7,18 @@ from typing import Tuple, List, Optional
 from perceptionmetrics.datasets.detection import ImageDetectionDataset
 
 
-def find_img_dir_and_ann_file(dataset_path, split):
+def find_img_dir_and_ann_file(dataset_path: str, split: str) -> Tuple[str, str]:
+    """
+    Find the image directory and annotation file for a given split in a COCO-style dataset.
+
+    :param dataset_path: Path to the root of the dataset
+    :type dataset_path: str
+    :param split: Dataset split name (e.g., "train", "val", "test")
+    :type split: str
+    :return: Tuple of (image directory path, annotation file path)
+    :rtype: Tuple[str, str]
+    :raises FileNotFoundError: If the image directory or annotation file is not found
+    """
     images_root = os.path.join(dataset_path, "images")
     img_dir = None
     pattern = re.compile(rf"{split}\d*")
