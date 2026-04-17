@@ -300,7 +300,7 @@ class TorchImageDetectionModel(detection_model.ImageDetectionModel):
         self.confidence_threshold = self.model_cfg.get("confidence_threshold", 0.5)
         self.nms_threshold = self.model_cfg.get("nms_threshold", 0.3)
         self.max_detections_per_image = self.model_cfg.get(
-            "max_detections_per_image", 100
+            "max_detections_per_image", -1
         )
 
         self.postprocess_args = [self.confidence_threshold]
